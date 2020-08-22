@@ -8,14 +8,17 @@ import {
   Tooltip,
 } from 'recharts';
 import * as d3 from 'd3';
+
 import { getData } from '../../services/api';
 
 export default function Chart({ fips, parameter, year }) {
   const [data, setData] = useState([]);
   const [ticks, setTicks] = useState([]);
+  const [units, setUnits] = useState();
 
   async function fetchData() {
     const rawData = (await getData(fips, year, parameter)).data;
+    determineUnits(rawData);
     prepareData(rawData);
   }
 
@@ -41,34 +44,41 @@ export default function Chart({ fips, parameter, year }) {
     setTicks(_ticks);
   }
 
+  function determineUnits(rawData) {
+    setUnits(rawData[0].Unit);
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
 
   return data.length && ticks.length ? (
-    <LineChart width={600} height={300} data={data}>
-      <Line type="monotone" dataKey="value" stroke="#8884d8" connectNulls />
-      <CartesianGrid stroke="#ccc" />
-      <XAxis
-        name="Time"
-        dataKey="time"
-        type="number"
-        scale="time"
-        domain={['dataMin', 'dataMax']}
-        ticks={ticks}
-        tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
-      />
-      <YAxis
-        name="pH"
-        unit=" pH"
-        domain={['dataMin', 'dataMax']}
-        padding={{ top: 20, bottom: 20 }}
-      />
-      <Tooltip
-        labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
-      />
-    </LineChart>
+    <>
+      <h1>{units} over Time</h1>
+      <LineChart width={600} height={300} data={data}>
+        <Line type="monotone" dataKey="value" stroke="#8884d8" connectNulls />
+        <CartesianGrid stroke="#ccc" />
+        <XAxis
+          name="Time"
+          dataKey="time"
+          type="number"
+          scale="time"
+          domain={['dataMin', 'dataMax']}
+          ticks={ticks}
+          tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
+        />
+        <YAxis
+          name={units}
+          unit={` ${units}`}
+          domain={['dataMin', 'dataMax']}
+          padding={{ top: 20, bottom: 20 }}
+        />
+        <Tooltip
+          labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
+        />
+      </LineChart>
+    </>
   ) : (
-    <></>
+    <>{/* TODO: add spinner */}</>
   );
 }

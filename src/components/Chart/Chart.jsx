@@ -50,7 +50,7 @@ export default function Chart({ fips, parameter, year }) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fips, parameter, year]);
 
   return data.length && ticks.length ? (
     <>

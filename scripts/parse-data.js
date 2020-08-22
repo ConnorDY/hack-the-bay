@@ -43,7 +43,6 @@ jsonStream.on('data', ({ value }) => {
     Parameter,
     SampleDate,
     SampleTime,
-    SampleType,
     Unit,
   } = value;
 
@@ -81,14 +80,11 @@ jsonStream.on('data', ({ value }) => {
     : [];
 
   data.push({
-    FIPS,
     Latitude,
     Longitude,
     MeasureValue,
-    Parameter,
     SampleDate,
     SampleTime,
-    SampleType,
     Unit,
   });
 

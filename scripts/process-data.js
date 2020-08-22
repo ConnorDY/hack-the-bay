@@ -4,7 +4,7 @@ const StreamArray = require('stream-json/streamers/StreamArray');
 const progress = require('progress-stream');
 
 const dataSourcePath = path.join(__dirname, '../data/WaterQualityFIPS.json');
-const dataOutputPath = path.join(__dirname, '../data/processed');
+const dataOutputPath = path.join(__dirname, '../public/data');
 
 // clear output folder if it exists
 if (fs.existsSync(dataOutputPath)) {

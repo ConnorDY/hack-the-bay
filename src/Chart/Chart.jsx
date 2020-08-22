@@ -57,7 +57,7 @@ export default function Chart() {
         padding={{ top: 20, bottom: 20 }}
       />
       <Tooltip
-        labelFormatter={(time) => `time: ${d3.timeFormat('%m/%d/%Y')(time)}`}
+        labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
       />
     </LineChart>
   ) : (

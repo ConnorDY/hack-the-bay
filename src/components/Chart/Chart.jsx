@@ -8,14 +8,18 @@ import {
   Tooltip,
 } from 'recharts';
 import * as d3 from 'd3';
+import { getData } from '../../services/api';
 
-import rawData from './example_data.json';
-
-export default function Chart() {
+export default function Chart({ fips, parameter, year }) {
   const [data, setData] = useState([]);
   const [ticks, setTicks] = useState([]);
 
-  useEffect(() => {
+  async function fetchData() {
+    const rawData = (await getData(fips, year, parameter)).data;
+    prepareData(rawData);
+  }
+
+  function prepareData(rawData) {
     const _data = rawData
       .map(({ MeasureValue, SampleDate, SampleTime }) => ({
         value: MeasureValue,
@@ -35,6 +39,10 @@ export default function Chart() {
 
     setData(_data);
     setTicks(_ticks);
+  }
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return data.length && ticks.length ? (

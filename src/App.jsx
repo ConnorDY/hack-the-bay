@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Chart from './Chart';
+import { Chart } from './components';
 
 function App() {
-  return <Chart />;
+  return <Chart fips="10001" parameter="PH" year={2019} />;
 }
 
 export default App;

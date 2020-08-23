@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.scss"],"names":[],"mappings":"AAAA,8BACE,wBAAA,CAAA,qBAAA,CAAA,oBAAA,CAAA,gBAAiB","file":"main.9006a39d.chunk.css","sourcesContent":[".recharts-cartesian-axis-tick {\n  user-select: none;\n}\n"]}

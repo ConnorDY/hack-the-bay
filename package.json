@@ -1,19 +1,21 @@
 {
   "name": "hack-the-bay",
   "version": "0.1.0",
+  "homepage": "https://connordy.github.io/hack-the-bay",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepublish": "npm run build",
-    "publish": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "axios": "^0.20.0",
     "d3": "^5.16.0",
     "lodash.flatten": "^4.4.0",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",

@@ -23,12 +23,11 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
   const [refAreaLeft, setRefAreaLeft] = useState('');
   const [refAreaRight, setRefAreaRight] = useState('');
 
-  /**
-   * TODO:
-   * Use left and right here if they aren't 'dataMin' and 'dataMax'.
-   * This way they will have an effect on the ticks when zooming in.
-   */
-  const years = endYear - startYear + 1;
+  const zoomedIn = left !== 'dataMin';
+
+  const years = zoomedIn
+    ? (right - left) / (1000 * 60 * 60 * 24 * 365)
+    : endYear - startYear + 1;
   const yearTicks = years >= 3;
 
   async function fetchData() {
@@ -55,10 +54,7 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
   function determineTicks() {
     const domain = d3
       .scaleTime()
-      .domain([
-        left !== 'dataMin' ? left : data[0].time,
-        data[data.length - 1].time,
-      ]);
+      .domain([zoomedIn ? left : data[0].time, data[data.length - 1].time]);
 
     const _ticks = domain.ticks(
       yearTicks ? d3.timeYear.every(1) : d3.timeMonth.every(years)
@@ -130,7 +126,9 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
           scale="time"
           domain={[left, right]}
           ticks={ticks}
-          tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
+          tickFormatter={(time) =>
+            d3.timeFormat(yearTicks ? '%Y' : '%B %Y')(time)
+          }
           angle={-45}
           textAnchor="end"
           interval={0}
@@ -155,7 +153,7 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
           />
         ) : null}
       </LineChart>
-      {left !== 'dataMin' ? <button onClick={zoomOut}>Zoom Out</button> : null}
+      {zoomedIn ? <button onClick={zoomOut}>Zoom Out</button> : null}
     </>
   ) : (
     <>{/* TODO: add spinner */}</>

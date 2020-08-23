@@ -6,6 +6,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  ReferenceArea,
 } from 'recharts';
 import * as d3 from 'd3';
 
@@ -13,8 +14,14 @@ import { getDataForYears } from '../../services/api';
 
 export default function Chart({ fips, parameter, startYear, endYear }) {
   const [data, setData] = useState([]);
+
   const [ticks, setTicks] = useState([]);
   const [units, setUnits] = useState();
+
+  const [left, setLeft] = useState('dataMin');
+  const [right, setRight] = useState('dataMax');
+  const [refAreaLeft, setRefAreaLeft] = useState('');
+  const [refAreaRight, setRefAreaRight] = useState('');
 
   const years = endYear - startYear + 1;
   const yearTicks = years >= 3;
@@ -53,43 +60,88 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
     setUnits(rawData[0].Unit);
   }
 
+  function zoom() {
+    if (refAreaLeft === refAreaRight || refAreaRight === '') {
+      setRefAreaLeft('');
+      setRefAreaRight('');
+      return;
+    }
+
+    // xAxis domain
+    if (refAreaLeft > refAreaRight) {
+      setLeft(refAreaRight);
+      setRight(refAreaLeft);
+    } else {
+      setLeft(refAreaLeft);
+      setRight(refAreaRight);
+    }
+    setRefAreaLeft('');
+    setRefAreaRight('');
+  }
+
+  function zoomOut() {
+    setLeft('dataMin');
+    setRight('dataMax');
+  }
+
   useEffect(() => {
     fetchData();
   }, [fips, parameter, startYear, endYear]);
 
   return data.length && ticks.length ? (
-    <LineChart width={600} height={400} data={data}>
-      <Line
-        type="monotone"
-        dataKey="value"
-        stroke="#8884d8"
-        dot={false}
-        connectNulls
-      />
-      <CartesianGrid stroke="#ccc" />
-      <XAxis
-        name="Time"
-        dataKey="time"
-        type="number"
-        scale="time"
-        domain={['dataMin', 'dataMax']}
-        ticks={ticks}
-        tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
-        angle={-45}
-        textAnchor="end"
-        interval={0}
-        height={85}
-      />
-      <YAxis
-        name={units}
-        unit={` ${units}`}
-        domain={['dataMin', 'dataMax']}
-        padding={{ top: 20, bottom: 20 }}
-      />
-      <Tooltip
-        labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
-      />
-    </LineChart>
+    <>
+      <LineChart
+        width={600}
+        height={400}
+        data={data}
+        onMouseDown={(e) => e && e.activeLabel && setRefAreaLeft(e.activeLabel)}
+        onMouseMove={(e) =>
+          e && e.activeLabel && refAreaLeft && setRefAreaRight(e.activeLabel)
+        }
+        onMouseUp={zoom}
+      >
+        <Line
+          type="monotone"
+          dataKey="value"
+          stroke="#8884d8"
+          dot={false}
+          connectNulls
+        />
+        <CartesianGrid stroke="#ccc" />
+        <XAxis
+          name="Time"
+          dataKey="time"
+          type="number"
+          scale="time"
+          domain={[left, right]}
+          ticks={ticks}
+          tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
+          angle={-45}
+          textAnchor="end"
+          interval={0}
+          height={85}
+          allowDataOverflow
+        />
+        <YAxis
+          name={units}
+          unit={` ${units}`}
+          domain={['dataMin', 'dataMax']}
+          padding={{ top: 20, bottom: 20 }}
+          allowDataOverflow
+        />
+        <Tooltip
+          labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
+        />
+        {refAreaLeft && refAreaRight ? (
+          <ReferenceArea
+            x1={refAreaLeft}
+            x2={refAreaRight}
+            strokeOpacity={0.3}
+          />
+        ) : null}
+      </LineChart>
+      {left !== 'dataMin' ? <button onClick={zoomOut}>Zoom Out</button> : null}
+    </>
   ) : (
     <>{/* TODO: add spinner */}</>
   );

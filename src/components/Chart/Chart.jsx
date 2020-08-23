@@ -54,7 +54,13 @@ export default function Chart({ fips, parameter, year }) {
 
   return data.length && ticks.length ? (
     <LineChart width={600} height={300} data={data}>
-      <Line type="monotone" dataKey="value" stroke="#8884d8" connectNulls />
+      <Line
+        type="monotone"
+        dataKey="value"
+        stroke="#8884d8"
+        dot={false}
+        connectNulls
+      />
       <CartesianGrid stroke="#ccc" />
       <XAxis
         name="Time"

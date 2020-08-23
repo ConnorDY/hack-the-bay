@@ -17,7 +17,7 @@ export default function Chart({ fips, parameter, year }) {
   const [units, setUnits] = useState();
 
   async function fetchData() {
-    const rawData = (await getData(fips, year, parameter)).data;
+    const rawData = await getData(fips, year, parameter);
     determineUnits(rawData);
     prepareData(rawData);
   }
@@ -53,31 +53,28 @@ export default function Chart({ fips, parameter, year }) {
   }, [fips, parameter, year]);
 
   return data.length && ticks.length ? (
-    <>
-      <h1>{units} over Time</h1>
-      <LineChart width={600} height={300} data={data}>
-        <Line type="monotone" dataKey="value" stroke="#8884d8" connectNulls />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis
-          name="Time"
-          dataKey="time"
-          type="number"
-          scale="time"
-          domain={['dataMin', 'dataMax']}
-          ticks={ticks}
-          tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
-        />
-        <YAxis
-          name={units}
-          unit={` ${units}`}
-          domain={['dataMin', 'dataMax']}
-          padding={{ top: 20, bottom: 20 }}
-        />
-        <Tooltip
-          labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
-        />
-      </LineChart>
-    </>
+    <LineChart width={600} height={300} data={data}>
+      <Line type="monotone" dataKey="value" stroke="#8884d8" connectNulls />
+      <CartesianGrid stroke="#ccc" />
+      <XAxis
+        name="Time"
+        dataKey="time"
+        type="number"
+        scale="time"
+        domain={['dataMin', 'dataMax']}
+        ticks={ticks}
+        tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
+      />
+      <YAxis
+        name={units}
+        unit={` ${units}`}
+        domain={['dataMin', 'dataMax']}
+        padding={{ top: 20, bottom: 20 }}
+      />
+      <Tooltip
+        labelFormatter={(time) => `date: ${d3.timeFormat('%m/%d/%Y')(time)}`}
+      />
+    </LineChart>
   ) : (
     <>{/* TODO: add spinner */}</>
   );

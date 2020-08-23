@@ -42,10 +42,11 @@ function App() {
             onChange={(e) => setStartYear(e.target.value)}
           >
             {Object.keys(dataMap[fips]).map((key) => (
-              <option key={key}>{key}</option>
+              <option disabled={key > endYear} key={key}>
+                {key}
+              </option>
             ))}
-          </select>
-          <br />
+          </select>{' '}
           <label htmlFor="endYear">End Year:</label>{' '}
           <select
             id="endYear"
@@ -53,7 +54,9 @@ function App() {
             onChange={(e) => setEndYear(e.target.value)}
           >
             {Object.keys(dataMap[fips]).map((key) => (
-              <option key={key}>{key}</option>
+              <option disabled={key < startYear} key={key}>
+                {key}
+              </option>
             ))}
           </select>
         </div>

@@ -23,6 +23,11 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
   const [refAreaLeft, setRefAreaLeft] = useState('');
   const [refAreaRight, setRefAreaRight] = useState('');
 
+  /**
+   * TODO:
+   * Use left and right here if they aren't 'dataMin' and 'dataMax'.
+   * This way they will have an effect on the ticks when zooming in.
+   */
   const years = endYear - startYear + 1;
   const yearTicks = years >= 3;
 
@@ -44,15 +49,21 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
       // sort by date
       .sort((a, b) => a.time - b.time);
 
+    setData(_data);
+  }
+
+  function determineTicks() {
     const domain = d3
       .scaleTime()
-      .domain([_data[0].time, _data[_data.length - 1].time]);
+      .domain([
+        left !== 'dataMin' ? left : data[0].time,
+        data[data.length - 1].time,
+      ]);
 
     const _ticks = domain.ticks(
       yearTicks ? d3.timeYear.every(1) : d3.timeMonth.every(years)
     );
 
-    setData(_data);
     setTicks(_ticks);
   }
 
@@ -87,6 +98,10 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
   useEffect(() => {
     fetchData();
   }, [fips, parameter, startYear, endYear]);
+
+  useEffect(() => {
+    if (data.length) determineTicks();
+  }, [data, left, right]);
 
   return data.length && ticks.length ? (
     <>

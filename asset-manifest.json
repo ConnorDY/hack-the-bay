@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/static/js/main.4de62f95.chunk.js",
-    "main.js.map": "/static/js/main.4de62f95.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.b149833b.js",
-    "runtime-main.js.map": "/static/js/runtime-main.b149833b.js.map",
-    "static/js/2.58f48600.chunk.js": "/static/js/2.58f48600.chunk.js",
-    "static/js/2.58f48600.chunk.js.map": "/static/js/2.58f48600.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.cbda83a2b011f24181606c0eee1acc36.js": "/precache-manifest.cbda83a2b011f24181606c0eee1acc36.js",
-    "service-worker.js": "/service-worker.js",
-    "static/js/2.58f48600.chunk.js.LICENSE.txt": "/static/js/2.58f48600.chunk.js.LICENSE.txt"
+    "main.js": "/hack-the-bay/static/js/main.62e7ebd4.chunk.js",
+    "main.js.map": "/hack-the-bay/static/js/main.62e7ebd4.chunk.js.map",
+    "runtime-main.js": "/hack-the-bay/static/js/runtime-main.e49299b0.js",
+    "runtime-main.js.map": "/hack-the-bay/static/js/runtime-main.e49299b0.js.map",
+    "static/js/2.f8d60960.chunk.js": "/hack-the-bay/static/js/2.f8d60960.chunk.js",
+    "static/js/2.f8d60960.chunk.js.map": "/hack-the-bay/static/js/2.f8d60960.chunk.js.map",
+    "index.html": "/hack-the-bay/index.html",
+    "precache-manifest.7f6908b218f86f66fc3d4aa111817fb7.js": "/hack-the-bay/precache-manifest.7f6908b218f86f66fc3d4aa111817fb7.js",
+    "service-worker.js": "/hack-the-bay/service-worker.js",
+    "static/js/2.f8d60960.chunk.js.LICENSE.txt": "/hack-the-bay/static/js/2.f8d60960.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.b149833b.js",
-    "static/js/2.58f48600.chunk.js",
-    "static/js/main.4de62f95.chunk.js"
+    "static/js/runtime-main.e49299b0.js",
+    "static/js/2.f8d60960.chunk.js",
+    "static/js/main.62e7ebd4.chunk.js"
   ]
 }

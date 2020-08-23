@@ -22,6 +22,7 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
   const [right, setRight] = useState('dataMax');
   const [refAreaLeft, setRefAreaLeft] = useState('');
   const [refAreaRight, setRefAreaRight] = useState('');
+  const [yValuesInView, setYValuesInView] = useState();
 
   const zoomedIn = left !== 'dataMin';
 
@@ -96,8 +97,19 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
   }, [fips, parameter, startYear, endYear]);
 
   useEffect(() => {
-    if (data.length) determineTicks();
+    if (!data.length) return;
+    determineTicks();
   }, [data, left, right]);
+
+  useEffect(() => {
+    setYValuesInView(
+      zoomedIn
+        ? data
+            .filter(({ time }) => time >= left && time <= right)
+            .map(({ value }) => value)
+        : undefined
+    );
+  }, [left, right, zoomedIn]);
 
   return data.length && ticks.length ? (
     <>
@@ -137,8 +149,14 @@ export default function Chart({ fips, parameter, startYear, endYear }) {
         />
         <YAxis
           name={units}
+          dateKey="value"
+          type="number"
           unit={` ${units}`}
-          domain={['dataMin', 'dataMax']}
+          domain={
+            yValuesInView
+              ? [Math.min(...yValuesInView), Math.max(...yValuesInView)]
+              : ['dataMin', 'dataMax']
+          }
           padding={{ top: 20, bottom: 20 }}
           allowDataOverflow
         />

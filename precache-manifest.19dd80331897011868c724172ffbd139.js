@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6470665f223171964930f509afff275d",
+    "revision": "2385608c4cf505f40e93232a3b77a4a3",
     "url": "/hack-the-bay/index.html"
   },
   {
-    "revision": "fb745e1344071bd316f2",
+    "revision": "394c9495707e56e902a9",
     "url": "/hack-the-bay/static/css/main.9006a39d.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/hack-the-bay/static/js/2.3357704d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fb745e1344071bd316f2",
-    "url": "/hack-the-bay/static/js/main.b5e8767c.chunk.js"
+    "revision": "394c9495707e56e902a9",
+    "url": "/hack-the-bay/static/js/main.8bea0181.chunk.js"
   },
   {
     "revision": "447c12b5e110a39bf6bc",

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/hack-the-bay/precache-manifest.17451dc47f255ba7c4aeba5767be9ea2.js"
+  "/hack-the-bay/precache-manifest.19dd80331897011868c724172ffbd139.js"
 );
 
 self.addEventListener('message', (event) => {

@@ -9,15 +9,18 @@ import {
 } from 'recharts';
 import * as d3 from 'd3';
 
-import { getData } from '../../services/api';
+import { getDataForYears } from '../../services/api';
 
-export default function Chart({ fips, parameter, year }) {
+export default function Chart({ fips, parameter, startYear, endYear }) {
   const [data, setData] = useState([]);
   const [ticks, setTicks] = useState([]);
   const [units, setUnits] = useState();
 
+  const years = endYear - startYear + 1;
+  const yearTicks = years >= 3;
+
   async function fetchData() {
-    const rawData = await getData(fips, year, parameter);
+    const rawData = await getDataForYears(fips, parameter, startYear, endYear);
     determineUnits(rawData);
     prepareData(rawData);
   }
@@ -38,7 +41,9 @@ export default function Chart({ fips, parameter, year }) {
       .scaleTime()
       .domain([_data[0].time, _data[_data.length - 1].time]);
 
-    const _ticks = domain.ticks(d3.timeMonth.every(1));
+    const _ticks = domain.ticks(
+      yearTicks ? d3.timeYear.every(1) : d3.timeMonth.every(years)
+    );
 
     setData(_data);
     setTicks(_ticks);
@@ -50,10 +55,10 @@ export default function Chart({ fips, parameter, year }) {
 
   useEffect(() => {
     fetchData();
-  }, [fips, parameter, year]);
+  }, [fips, parameter, startYear, endYear]);
 
   return data.length && ticks.length ? (
-    <LineChart width={600} height={300} data={data}>
+    <LineChart width={600} height={400} data={data}>
       <Line
         type="monotone"
         dataKey="value"
@@ -70,6 +75,10 @@ export default function Chart({ fips, parameter, year }) {
         domain={['dataMin', 'dataMax']}
         ticks={ticks}
         tickFormatter={(time) => d3.timeFormat('%B %Y')(time)}
+        angle={-45}
+        textAnchor="end"
+        interval={0}
+        height={85}
       />
       <YAxis
         name={units}

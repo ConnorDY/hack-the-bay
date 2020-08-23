@@ -10,9 +10,9 @@ export async function getData(fips, year, parameter) {
     .data;
 }
 
-export async function getDataForYears(fips, parameter, yearStart, yearEnd) {
+export async function getDataForYears(fips, parameter, startYear, endYear) {
   const yearPromises = [];
-  for (let year = yearStart; year <= yearEnd; year++) {
+  for (let year = startYear; year <= endYear; year++) {
     yearPromises.push(getData(fips, year, parameter));
   }
 

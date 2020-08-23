@@ -8,7 +8,8 @@ function App() {
   const [dataMap, setDataMap] = useState();
   const [fips, setFips] = useState('10001');
   const [parameter, setParameter] = useState('PH');
-  const [year, setYear] = useState(2019);
+  const [startYear, setStartYear] = useState(2015);
+  const [endYear, setEndYear] = useState(2019);
 
   async function fetchDataMap() {
     setDataMap(await getDataMap());
@@ -34,11 +35,22 @@ function App() {
           </select>
         </div>
         <div>
-          <label htmlFor="year">Year:</label>{' '}
+          <label htmlFor="startYear">Start Year:</label>{' '}
           <select
-            id="year"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
+            id="startYear"
+            value={startYear}
+            onChange={(e) => setStartYear(e.target.value)}
+          >
+            {Object.keys(dataMap[fips]).map((key) => (
+              <option key={key}>{key}</option>
+            ))}
+          </select>
+          <br />
+          <label htmlFor="endYear">End Year:</label>{' '}
+          <select
+            id="endYear"
+            value={endYear}
+            onChange={(e) => setEndYear(e.target.value)}
           >
             {Object.keys(dataMap[fips]).map((key) => (
               <option key={key}>{key}</option>
@@ -52,7 +64,7 @@ function App() {
             value={parameter}
             onChange={(e) => setParameter(e.target.value)}
           >
-            {dataMap[fips][year].map((key) => (
+            {dataMap[fips][startYear].map((key) => (
               <option value={key} key={key}>
                 {parameterDictionary[key] ? parameterDictionary[key] : key}
               </option>
@@ -67,7 +79,12 @@ function App() {
           : parameter}{' '}
         over Time
       </h2>
-      <Chart fips={fips} parameter={parameter} year={year} />
+      <Chart
+        fips={fips}
+        parameter={parameter}
+        startYear={startYear}
+        endYear={endYear}
+      />
     </>
   ) : (
     <>{/* TODO: add spinner */}</>
